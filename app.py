@@ -9,16 +9,35 @@ from flask import render_template, url_for
 from flask_cors import CORS # this dependency is required to deal with the CORS issue
 import numpy as np
 import tensorflow as tf
+from psutil import users
 from tensorflow import keras
 from keras import backend as K
 from keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator # remove tensorflow from here if not needed.
 from keras.preprocessing.image import img_to_array
+from flask_wtf import FlaskForm
+from flask_sqlalchemy import SQLAlchemy
+
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5000"}}) # for security concerns, only allow the predict html page to enable CORS, for the project only.
 
+#db configuration:
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+
+
+class User(db.Model):
+    __table_name__ = 'users'
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    email = db.Column(db.String(50), nullable = False)
+    password = db.Column(db.String(100), nullable = False)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
 
 
 @app.route('/')
@@ -30,6 +49,15 @@ def base_page():
 @app.route('/test')
 def running():
     return "Flask is running!" # if you see this, them means the backend flask server is running normally.
+
+@app.route('/register')
+def register_account():
+    return render_template("register.html")
+
+
+
+
+
 
 def get_model():
     global model 
