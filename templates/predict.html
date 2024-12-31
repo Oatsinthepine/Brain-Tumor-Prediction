@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <script src="{{ url_for('static', filename='js/file_handle.js') }}"></script>
+    <div class = "container text-center">
+        <img id="selected-image" src="{{ url_for('static', filename='pictures/littleRN.gif') }}" class="img-fluid mt-3" alt="Selected Image"/>
+        <h1>Brain Tumor Prediction</h1>
+        <h5>Please upload CT / MRI scan image to predict</h5>
+        <input id="image-selector" type="file" class="form-control mt-3">
+        <button id="predict-button" class="btn btn-primary mt-3">Predict Image</button>
+        <br>
+        <h3 class="predictions-label mt-4"><strong>Predict Results Below:</strong></h3>
+        <br>
+        <div class="prediction">
+            <p>Glioma Tumor: <span id="glioma_tumor_prediction"></span></p>
+            <p>Meningioma Tumor: <span id="meningioma_tumor_prediction"></span></p>
+            <p>No Tumor: <span id="no_tumor_prediction"></span></p>
+        </div>
+    </div>
+{% endblock %}

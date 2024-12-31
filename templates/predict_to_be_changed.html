@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brain Tumor Image Prediction</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Style the heading */
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        /* Style the "Predictions:" label */
+        .predictions-label {
+            font-weight: bold;
+            font-size: 1.8em;
+            margin-top: 20px;
+        }
+
+        .prediction p {
+            font-size: 1.5em;
+            margin: 5px 0;
+        }
+
+        /* Style the image */
+        img {
+            width: 50%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Brain Tumor Image Prediction</h1>
+        <input id="image-selector" type="file">
+        <button id="predict-button">Predict Image</button>
+
+        <p class="predictions-label">Predictions:</p>
+        <div class="prediction">
+            <p> Glioma Tumor: <span id="glioma_tumor_prediction"></span></p>
+            <p> Meningioma Tumor: <span id="meningioma_tumor_prediction"></span></p>
+            <p> No Tumor: <span id="no_tumor_prediction"></span></p>
+            <!-- <p> Pituitary Tumor: <span id="pituitary_tumor_prediction"></span></p> -->
+        </div>
+        <img id="selected-image" src=""/>
+    </div>
+
+
+    <!-- use jquery here for the web file upload -->
+    <script src='https://code.jquery.com/jquery-3.3.1.min.js'></script>
+    <script>
+        let base64Image;
+
+        // Convert the image file to base64 format when selected
+        $("#image-selector").change(function () {
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let dataURL = reader.result;
+                $("#selected-image").attr("src", dataURL);
+                // here it can accept file format end with with png, jpg, or jpeg.
+                base64Image = dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+            }
+            reader.readAsDataURL($("#image-selector")[0].files[0]);
+            $("#glioma_tumor_prediction").text("");
+            $("#meningioma_tumor_prediction").text("");
+            $("#no_tumor_prediction").text("");
+            // $("#pituitary_tumor_prediction").text("");
+        });
+
+        // Send the base64 image to the Flask API on button click
+        $("#predict-button").click(function(event) {
+            let message = {
+                image: base64Image
+            };
+
+            // here use .ajax to dynamically update part of the webframe when receives user uploaded file, no need to refresh the whole page if new image uploaded.
+            $.ajax({
+                url: "http://127.0.0.1:5000/tumor_predict", // Use the correct URL for local Flask server (add `http://` for local usage)
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(message),
+                success: function(response) {
+                    $("#glioma_tumor_prediction").text(response.Prediction.glioma_tumor);
+                    $("#meningioma_tumor_prediction").text(response.Prediction.meningioma_tumor);
+                    $("#no_tumor_prediction").text(response.Prediction.no_tumor);
+                    // $("#pituitary_tumor_prediction").text(response.Prediction.pituitury_tumor);
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.error("Error:", error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
