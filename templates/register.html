@@ -5,47 +5,30 @@
 {% block content %}
     <body class = "text-center">
         <div class = "container">
-            <form method = "POST" class = "form-register" style="color: aliceblue" action="{{ url_for('register_account') }}">
+            <form method = "POST" class = "form-register" style="color: aliceblue">
+                {{ form.hidden_tag() }}
                 <h2 class="h3 mb-3 font-weight-normal">Register Your Account</h2>
             <br>
             <br>
-{#            <!-- Username -->#}
-{#            {{ form.username.label(class="form-label") }}#}
-{#            {{ form.username(class="form-control", placeholder="Username") }}#}
-{##}
-{#            <!-- Email Address -->#}
-{#            {{ form.email_address.label(class="form-label") }}#}
-{#            {{ form.email_address(class="form-control", placeholder="Email Address") }}#}
-{##}
-{#            <!-- Password 1 -->#}
-{#            {{ form.password_1.label(class="form-label") }}#}
-{#            {{ form.password_1(class="form-control", placeholder="Password") }}#}
-{##}
-{#            <!-- Password 2 -->#}
-{#            {{ form.password_2.label(class="form-label") }}#}
-{#            {{ form.password_2(class="form-control", placeholder="Confirm Password") }}#}
-{#            <br>#}
-{#            <!-- Submit Button -->#}
-{#            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}#}
-{#            <br>#}
-{#            <br>#}
-            <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-             <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="mb-3">
-            <label for="confirm_password" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <!-- Username -->
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", placeholder="Username") }}
+
+            <!-- Email Address -->
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="Email Address") }}
+
+            <!-- Password 1 -->
+            {{ form.password_1.label(class="form-label") }}
+            {{ form.password_1(class="form-control", placeholder="Password") }}
+
+            <!-- Password 2 -->
+            {{ form.password_2.label(class="form-label") }}
+            {{ form.password_2(class="form-control", placeholder="Confirm Password") }}
+            <br>
+            <!-- Submit Button -->
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+            <br>
             <br>
             <div class="checkbox mb-3">
                 <h5>Already have an account?</h5>

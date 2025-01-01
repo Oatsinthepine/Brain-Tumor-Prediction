@@ -3,20 +3,18 @@ import base64
 import io
 from PIL import Image
 from flask import Flask
-from flask import request
-from flask import jsonify
-from flask import render_template, url_for
+from flask import jsonify, render_template, url_for, request, redirect, flash, get_flashed_messages
 from flask_cors import CORS # this dependency is required to deal with the CORS issue
 import numpy as np
-import tensorflow as tf
-from psutil import users
-from tensorflow import keras
-from keras import backend as K
 from keras.models import load_model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator # remove tensorflow from here if not needed.
 from keras.preprocessing.image import img_to_array
-from flask_wtf import FlaskForm
+
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, EqualTo, Length, Email, ValidationError
 
 
 
@@ -26,8 +24,9 @@ CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5000"}}) # for s
 #db configuration:
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SECRET_KEY'] = "3Dfb8MHWa3sp2F62"
 db = SQLAlchemy(app)
-
+bcrypt = Bcrypt(app)
 
 class User(db.Model):
     __table_name__ = 'users'
@@ -39,28 +38,82 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
+class RegisterForm(FlaskForm):
+    # When you define username = StringField(...) in your RegisterForm, WTForms knows that this field is named 'username', same as all the rest.
+    username = StringField(label= "User Name", validators=[DataRequired(), Length(min=3, max=30)])
+    email = StringField(label="Email Address", validators=[DataRequired(), Email()])
+    password_1 = StringField(label="New Password", validators=[DataRequired(), Length(min=8, max=24)])
+    password_2 = StringField(label="Please re-confirm", validators=[
+        DataRequired(), EqualTo('password_1', message="Password must match!")
+    ])
+    submit = SubmitField(label="create_account")
+
+
+#在flask_wtf中，validate_<field_name> 是一个特殊的方法. Flask-WTF (through WTForms) automatically calls this method when validating the field specified in <fieldname> (e.g., username).
+
+    def validate_username(self, username_to_check):
+        #注意如果你这里filter_by()里面忘记.data的时候会报错，.data is the actual 'data' retrieved instead of the object.
+        username = User.query.filter_by(username = username_to_check.data).first()
+        if username:
+            raise ValidationError("This username already used, please use another one.")
+
+    def validate_email(self, email_to_check):
+        email = User.query.filter_by(email = email_to_check.data).first()
+        if email:
+            raise ValidationError ("This email already exists, please use another one.")
+
+class LoginForm(FlaskForm):
+    username = StringField(label = "User Name", validators=[DataRequired()])
+    password = StringField(label= "Enter your password", validators=[DataRequired()])
+    submit = SubmitField(label="Sign in")
+
+
 
 @app.route('/')
 def base_page():
-    # return "This is the home page. For using the model to predict your image, please visit: 'http://127.0.0.1:5000/predict'"
     return render_template("base.html")
 
 
-@app.route('/test')
-def running():
-    return "Flask is running!" # if you see this, them means the backend flask server is running normally.
-
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register_account():
-    return render_template("register.html")
+    # step1: instantiate RegisterForm first
+    form = RegisterForm()
+    if form.validate_on_submit():
+        """
+        During form validation (form.validate_on_submit()), WTForms automatically checks for a method named validate_<field_name>. 
+        If it finds one, it passes the field object (form.<field_name>) as the argument to the method.
+        """
+        user_to_create = User(username = form.username.data,
+                              email = form.email.data,
+                              password = form.password_2.data)
+        try:
+            db.session.add(user_to_create)
+            db.session.commit()
+            flash("New Account Created Successfully!", category = 'success')
+            return redirect(url_for("predict"))
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Error occurred: {e}", category='danger')
+
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field.capitalize()}: {error}", category="danger")
+
+    return render_template("register.html", form=form)
 
 
-
-
+@app.route('/login')
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        curr_user = User.query.filter_by(username=login_form.username.data).first()
+        if curr_user and curr_user.check_password_match(login_form.password.data):
+            pass
 
 
 def get_model():
-    global model 
+    global model
     model = load_model("model_checkpoint_epoch_177.h5") # change the path here for your local path when accessing this .h5 model file.
     print("model successfully loaded.") # when you run flask, if successful, you should see this message print in the terminal.
 

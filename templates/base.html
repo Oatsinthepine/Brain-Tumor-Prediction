@@ -39,6 +39,18 @@
     </div>
   </div>
 </nav>
+    {% with messages = get_flashed_messages(with_categories= True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class = 'alert alert-{{ category }}'>
+                    <button type ="button" class="m1-2 mb-1 close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
 <!-- block content here !-->
 <div class = "container mt-4">
@@ -46,6 +58,5 @@
 
     {% endblock %}
 </div>
-
 </body>
 </html>
