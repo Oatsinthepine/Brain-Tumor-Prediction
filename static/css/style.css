@@ -1,7 +1,7 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(45deg, #212121, #212556, #0b2a67);
+  background: linear-gradient(45deg, #212121, #0e2037, #0e0624);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
     color: white;
