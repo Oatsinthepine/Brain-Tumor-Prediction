@@ -1,6 +1,7 @@
 # get all dependencies
 import base64
 import io
+
 from PIL import Image
 from flask import Flask
 from flask import jsonify, render_template, url_for, request, redirect, flash, get_flashed_messages
@@ -16,9 +17,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Length, Email, ValidationError
 
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 
-app = Flask(__name__)
+
+
+app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5000"}}) # for security concerns, only allow the predict html page to enable CORS, for the project only.
 
 #db configuration:
@@ -27,29 +31,49 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SECRET_KEY'] = "3Dfb8MHWa3sp2F62"
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+# set the login view (redirects to this page if a user isn't authenticated)
+login_manager.login_view = "login"  # the function name of your login route
+login_manager.login_message_category = "info"  # Flash message category for unauthorized access
 
-class User(db.Model):
+
+
+
+class User(db.Model, UserMixin):
+    """
+    By inheriting from UserMixin, the following properties are automatically added to User class:
+	•	is_authenticated: Returns True if the user is logged in.
+	•	is_active: Returns True by default unless overridden.
+	•	is_anonymous: Returns False for logged-in users.
+	•	get_id(): Used to retrieve the user ID, which is required for session management.
+    """
     __table_name__ = 'users'
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable = False)
     password = db.Column(db.String(100), nullable = False)
 
+    #here for security reason, let's implement a hashed password via the flask_bcrypt module
+    def set_password(self, plain_password):
+        self.password = bcrypt.generate_password_hash(plain_password).decode('utf-8') # hey why decode here? aren't we encoding password?
+
+    def check_password_match(self, user_entered_password):
+        return bcrypt.check_password_hash(self.password, user_entered_password)
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
 class RegisterForm(FlaskForm):
     # When you define username = StringField(...) in your RegisterForm, WTForms knows that this field is named 'username', same as all the rest.
+    # 在flask_wtf中，validate_<field_name> 是一个特殊的方法. Flask-WTF (through WTForms) automatically calls this method when validating the field specified in <fieldname> (e.g., username).
     username = StringField(label= "User Name", validators=[DataRequired(), Length(min=3, max=30)])
     email = StringField(label="Email Address", validators=[DataRequired(), Email()])
-    password_1 = StringField(label="New Password", validators=[DataRequired(), Length(min=8, max=24)])
-    password_2 = StringField(label="Please re-confirm", validators=[
+    password_1 = PasswordField(label="New Password", validators=[DataRequired(), Length(min=8, max=24)])
+    password_2 = PasswordField(label="Please re-confirm", validators=[
         DataRequired(), EqualTo('password_1', message="Password must match!")
     ])
     submit = SubmitField(label="create_account")
 
-
-#在flask_wtf中，validate_<field_name> 是一个特殊的方法. Flask-WTF (through WTForms) automatically calls this method when validating the field specified in <fieldname> (e.g., username).
 
     def validate_username(self, username_to_check):
         #注意如果你这里filter_by()里面忘记.data的时候会报错，.data is the actual 'data' retrieved instead of the object.
@@ -64,15 +88,22 @@ class RegisterForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField(label = "User Name", validators=[DataRequired()])
-    password = StringField(label= "Enter your password", validators=[DataRequired()])
+    password = PasswordField(label= "Enter your password", validators=[DataRequired()])
     submit = SubmitField(label="Sign in")
 
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def base_page():
     return render_template("base.html")
 
+@app.route('/home')
+def home_page():
+    return render_template('home.html')
 
 @app.route('/register', methods=["GET", "POST"])
 def register_account():
@@ -83,14 +114,16 @@ def register_account():
         During form validation (form.validate_on_submit()), WTForms automatically checks for a method named validate_<field_name>. 
         If it finds one, it passes the field object (form.<field_name>) as the argument to the method.
         """
-        user_to_create = User(username = form.username.data,
-                              email = form.email.data,
-                              password = form.password_2.data)
+        user_to_create = User(
+            username=form.username.data,
+            email=form.email.data
+        )
+        user_to_create.set_password(form.password_2.data)
         try:
             db.session.add(user_to_create)
             db.session.commit()
             flash("New Account Created Successfully!", category = 'success')
-            return redirect(url_for("predict"))
+            return redirect(url_for("login"))
         except Exception as e:
             db.session.rollback()
             flash(f"Error occurred: {e}", category='danger')
@@ -103,13 +136,30 @@ def register_account():
     return render_template("register.html", form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         curr_user = User.query.filter_by(username=login_form.username.data).first()
         if curr_user and curr_user.check_password_match(login_form.password.data):
-            pass
+            login_user(curr_user)
+            flash(f"Login Successfully! login as {curr_user.username}.", category='success')
+            return redirect(url_for('predict'))
+        elif not curr_user:
+            flash("Invalid username!", category='danger')
+        else:
+            flash("Incorrect password, please try again!", category='danger')
+    return render_template('login.html', login_form = login_form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash(f"You have logged out successfully!", category="info")
+    return redirect(url_for("base_page"))
+
+
+
 
 
 def get_model():
@@ -151,7 +201,7 @@ def core_func(): # here is the predict function for user
     predicted_probabilities = prediction[0]
 
     # create a dictionary to hold all returned classes probabilities.
-    # here the index co-respond to the classes.
+    # here the index correspond to the classes.
     response = {
         'Prediction': {
             "glioma_tumor": f"{round(float(predicted_probabilities[0]) * 100, 2)}%",
@@ -165,6 +215,7 @@ def core_func(): # here is the predict function for user
 
 # here is the flask url for using the backend model to predict user uplaoded image file
 @app.route("/predict")
+@login_required
 def predict():
     # call the flask build-in method to render my predict_to_be_changed.html webpage.
     return render_template("predict.html")

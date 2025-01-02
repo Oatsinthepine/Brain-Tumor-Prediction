@@ -3,5 +3,26 @@
     Login Page
 {% endblock %}
 {% block content %}
+    <body class = 'text-center'>
+        <div class="container-fluid">
+            <form method="POST" class="form-signin" style="color: blanchedalmond">
+                {{ login_form.hidden_tag() }}
+                <h1 class="h3 mb-3 font-weight-normal">Please login here</h1>
+                <br>
+                {{ login_form.username.label(class = 'form-label') }}
+                {{ login_form.username(class='form-control', placeholder = 'Username')}}
 
+                {{ login_form.password.label(class ='form-label')}}
+                {{ login_form.password(class = 'form-control', placeholder = 'Password') }}
+                <br>
+                {{ login_form.submit(class='btn btn-light')}}
+                <br>
+                <br>
+                <div class="checkbox mb-3">
+                    <h5>Do not have an account yet?</h5>
+                    <a class="btn btn-info btn-secondary" href="{{ url_for('register_account') }}">Register</a>
+                </div>
+            </form>
+        </div>
+    </body>
 {% endblock %}

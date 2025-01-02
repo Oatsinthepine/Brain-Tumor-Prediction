@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="container mt-8">
+    <!-- Hero Section -->
+    <div class="jumbotron text-center text-light" style="background: linear-gradient(to right, #1f4037, #99f2c8); padding: 50px;">
+        <h1 class="display-4">Brain Tumor Detection</h1>
+        <p class="lead">
+            Harnessing the power of deep learning to identify brain tumors with exceptional accuracy.
+        </p>
+        <hr class="my-4">
+        <p>
+            Explore our state-of-the-art models trained on medical imaging datasets to bring AI-assisted diagnosis closer to reality.
+        </p>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('predict') }}" role="button">Get Started</a>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row text-center mt-5">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-gear-wide-connected"></i> Advanced Models</h5>
+                    <p class="card-text">
+                        Trained with CNN and Transfer Learning models like ResNet and VGG16 for high accuracy.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-bar-chart-line"></i> Exceptional Performance</h5>
+                    <p class="card-text">
+                        Our best-performing model achieves over 95% accuracy in detecting brain tumors.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-person-lines-fill"></i> User-Friendly</h5>
+                    <p class="card-text">
+                        Accessible predictions through an intuitive interface designed for ease of use.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Information Section -->
+    <div class="mt-5 p-4 bg-light rounded">
+        <h3>About the Project</h3>
+        <p>
+            This project was developed using cutting-edge machine learning techniques and medical imaging datasets.
+            The goal is to aid healthcare professionals in identifying brain tumors more efficiently and accurately.
+        </p>
+        <p>
+            <strong>Highlights:</strong>
+        </p>
+        <ul>
+            <li>Trained on a comprehensive medical dataset.</li>
+            <li>Utilizes advanced deep learning models like CNNs and ResNet.</li>
+            <li>Achieves high accuracy with user-friendly deployment.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
