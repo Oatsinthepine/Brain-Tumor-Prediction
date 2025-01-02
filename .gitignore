@@ -1,0 +1,14 @@
+# Ignore IDE-specific files
+.idea/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Python cache
+__pycache__/
+
+# Ignore model checkpoint files
+*.h5
+
+# Ignore instance folder
+instance/
