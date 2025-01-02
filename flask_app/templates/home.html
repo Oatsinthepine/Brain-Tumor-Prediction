@@ -16,9 +16,9 @@
         </p>
     <br>
         {% if current_user.is_authenticated %}
-        <a class="btn btn-primary btn-lg" href="{{ url_for('predict') }}" role="button">Get Started</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('main.predict') }}" role="button">Get Started</a>
         {% else %}
-        <a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Get Started</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('main.login') }}" role="button">Get Started</a>
         {% endif %}
     </div>
 
