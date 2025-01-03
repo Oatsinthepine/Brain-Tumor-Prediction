@@ -1,9 +1,9 @@
 body {
   margin: 0;
   height: 100vh;
-  background: linear-gradient(45deg, #212121, #0e2037, #0e0624);
+  background: linear-gradient(45deg, #212121, #132c4b, #160937);
   background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
+  animation: gradientBG 10s ease infinite;
     color: white;
     text-align: center;
 }
@@ -12,4 +12,20 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+#home-page .card-body {
+    background: rgba(33,33,33,0.5);
+    color:#fff ;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 0 3px black;
+    transition: background-color 0.5s, color 0.5s, border 0.5s;
+}
+
+#home-page .card-body:hover {
+  background-color: #212121;
+  color: #fff;
+  border: solid 2px #fff;
 }

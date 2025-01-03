@@ -12,3 +12,4 @@ __pycache__/
 
 # Ignore instance folder
 instance/
+config.py
