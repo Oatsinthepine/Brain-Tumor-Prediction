@@ -4,8 +4,8 @@
 
 {% block content %}
 <div id = "home-page" class="container mt-8">
-    <!-- Hero Section -->
-    <div class="jumbotron text-center text-light" style="background: linear-gradient(to right, #212121, #7a91a8); padding: 80px;">
+
+    <div class="jumbotron text-center text-light moving-bg">
         <h1 class="display-4">Brain Tumor Detection</h1>
         <p class="lead">
             Harnessing the power of deep-learning model to detect brain tumors.
@@ -55,5 +55,34 @@
             </div>
         </div>
     </div>
+    <br>
+    <hr>
+    <!-- more info section!-->
+    <div class="d-flex justify-content-center align-items-center min-vh-50">
+        <div class="accordion text-center p-4" style="width: 65%; background-color: #212121; border-radius: 30px;">
+            <h3 class="accordion-title text-light"><strong>Information Panel</strong></h3>
+            <div class="content-container mt-4">
+                <div class="question text-light">Why showing users my project in this way?</div>
+                <div class="answer"> Since this is the last project for the bootcamp, I would like to present our trained model to users in an interactive approach. Which I made this webpage that
+                    using flask as the back-end framework, integrating the user register and login verification function to secure privacy needs.
+                    Also, I personally would love to try combining all my knowledge learned into a neet and presentable work.
+                </div>
+            </div>
+            <div class="content-container mt-4">
+                <div class="question text-light">What can you expect from this?</div>
+                <div class="answer">
+                    To be honest, this is my first time building flask webpage. It's really a quick demo, which the core function for this
+                    page is to enable user to upload CT/MRI brain images, after they registered and logged in. The U-Net model trained will
+                    predict the user upload image, and returns the prediction.
+                </div>
+            </div>
+            <div class="content-container mt-4">
+                <div class="question text-light">Any further suggestions? Or want to know more?</div>
+                <div class="answer">Thanks for your valuable time on experiencing my simple flask webpage. Please also visit my github and Linkedin page
+                to know more ! (^_^) </div>
+            </div>
+        </div>
+    </div>
 </div>
+    <script src="{{ url_for('static', filename='js/accordion.js') }}"></script>
 {% endblock %}
