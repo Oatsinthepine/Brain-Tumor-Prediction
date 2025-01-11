@@ -2,8 +2,9 @@
 This is a Flask web application allows users to upload medical images and predict whether a brain tumor is present and the potential class of tumor. 
 The backend model was trained on medical imaging datasets obatined from kaggle website and leverages convolutional neural networks (CNN) to classify brain tumors.
 
-### `Notion`: This is an improved version of the Project 4: Brain Tumor classification and detection using deep-learning models. 
+### `Notion`: This is an improved version of the "Project 4: Brain Tumor classification and detection using deep-learning models". 
 ### To view the original group project, please visit the pinned `Project4` repository in my github :)
+- [Check out my original version of the project in detail](https://github.com/Oatsinthepine/Project4)
 
 ## Improvements made:
 I made several improvement after the completion of this group project. 
@@ -14,8 +15,8 @@ I made several improvement after the completion of this group project.
 ### Project structure:
 ```plaintext
 .
-├── config.py            # Configuration settings for Flask app, not in repo
-├── flask_app            # main Flask app folder
+├── config.py            # Configuration settings for Flask app, not in repo! I will show you how to set it in below steps.
+├── flask_app            # main Flask folder
 │   ├── __init__.py      # Initializes Flask app and extensions
 │   ├── models.py        # Database models for the app
 │   ├── routes.py        # Defines app routes
@@ -27,7 +28,7 @@ I made several improvement after the completion of this group project.
 ├── Procfile             # Specifies the command to run the app on Heroku
 ├── requirements.txt     # Python dependencies for the app
 ├── run.py               # Entry point for running the app locally
-└── README.md            # Project documentation (this file)
+└── README.md            # Project documentation (This file)
 
 ```
 ## User guide:
