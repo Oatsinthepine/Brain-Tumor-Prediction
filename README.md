@@ -61,6 +61,10 @@ After completing the initial group project, I made several enhancements to impro
 
 ## User Guide
 
+### Step 0: Please ensure your have set up an dedicated directory and activate your virtual environment.
+
+---
+
 ### Step 1: Clone the Repository
 
 Use the following command to clone the repository:  
