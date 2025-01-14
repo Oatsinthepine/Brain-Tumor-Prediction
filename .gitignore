@@ -5,11 +5,18 @@
 .DS_Store
 
 # Ignore Python cache
+*.pyc
 __pycache__/
 
 # Ignore model checkpoint files
 *.h5
 
-# Ignore instance folder
-instance/
+# Ignore local SQLite database file
+instance/user.db
+
+# ignore config files
 config.py
+
+# Ignore migration files
+migrations/
+
