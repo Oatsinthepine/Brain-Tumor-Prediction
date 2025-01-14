@@ -10,5 +10,7 @@ keras== 2.15.0
 tensorflow==2.15.0
 numpy>=1.24.0,<1.26.0
 psycopg2-binary==2.9.10
+python-dotenv==1.0.1
+
 
 gunicorn==23.0.0

@@ -20,3 +20,5 @@ config.py
 # Ignore migration files
 migrations/
 
+# ignore .env file
+.env
