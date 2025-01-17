@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_migrate import Migrate #get migrate here
+from flask_cors import CORS
+
 
 # initialise extensions
 db = SQLAlchemy()
@@ -32,6 +34,9 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db) # Bind Flask-Migrate to the app and SQLAlchemy
+
+    #enable cors for the app
+    CORS(app, resources={r"/*": {"origins": "https://brain-tumor-prediction-y0vx.onrender.com"}})
 
     # Register blueprints
     from flask_app.routes import main

@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = { image: base64Image };
 
         // Send POST request to Flask API
-        fetch("http://127.0.0.1:5000/tumor_predict", {
+        fetch("https://brain-tumor-prediction-y0vx.onrender.com/tumor_predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(message),
