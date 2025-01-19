@@ -8,9 +8,6 @@
 *.pyc
 __pycache__/
 
-# Ignore model checkpoint files
-*.h5
-
 # Ignore local SQLite database file
 instance/user.db
 
