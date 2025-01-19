@@ -27,7 +27,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["MODEL_PATH"] = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "flask_app", "model_checkpoint_epoch_177.h5"
+        os.path.dirname(__file__), "model_checkpoint_epoch_177.h5"
     )
 
 
