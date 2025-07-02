@@ -2,7 +2,8 @@
 {% block content %}
     <script src="{{ url_for('static', filename='js/file_handle.js') }}"></script>
     <div class = "container text-center">
-        <img id="selected-image" src="{{ url_for('static', filename='pictures/littleRN.gif') }}" class="img-fluid mt-3" alt="Selected Image"/>
+        <img id="selected-image" src="{{ url_for('static', filename='pictures/predict_bg.jpg') }}" class="img-fluid mt-3" alt="Selected Image"/>
+        <br>
         <h1>Brain Tumor Prediction</h1>
         <h5>Please upload CT / MRI brain-scan image to predict</h5>
         <input id="image-selector" type="file" class="form-control mt-3">

@@ -20,15 +20,17 @@ login_manager.login_message_category = 'info'
 def create_app():
     app = Flask(__name__, template_folder='templates',static_folder='static')
 
-    # from config import Configuration
-    # app.config.from_object(Configuration) # load configuration
+    from config import Configuration
+    app.config.from_object(Configuration) # load configuration
 
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["MODEL_PATH"] = os.path.join(
-        os.path.dirname(__file__), "model_checkpoint_epoch_177.h5"
-    )
+    # here below is the code comment out used when deploying to render.com, no-longer in use
+
+    # app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # app.config["MODEL_PATH"] = os.path.join(
+    #     os.path.dirname(__file__), "model_checkpoint_epoch_177.h5"
+    # )
 
 
     # initialise extensions
