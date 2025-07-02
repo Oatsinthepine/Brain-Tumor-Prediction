@@ -43,7 +43,7 @@ After completing the initial group project, I made several enhancements to impro
 
 ```plaintext
 .
-├── config.py            # Configuration settings for the Flask app (not in repo, instructions provided below)
+├── config.py            # Configuration settings for the Flask app (not in repo, instructions provided below to create this file)
 ├── flask_app            # Main Flask application folder
 │   ├── __init__.py      # Initializes the Flask app and extensions
 │   ├── models.py        # Database models for user data
@@ -58,6 +58,9 @@ After completing the initial group project, I made several enhancements to impro
 ├── run.py               # Entry point for running the app locally
 └── README.md            # Project documentation (this file)
 ```
+
+Note the Procfile and runtime.txt files were used for deployment on Render, and are not required for local development. 
+
 
 ---
 
@@ -75,7 +78,7 @@ if you are not familiar with how to set up a virtual environment, please refer t
 
 ---
 
-### Step 0.5: For local running flask app, please ensure you has installed SQLite3 on your machine. This project uses SQLite as the database, you need to have SQLite installed.
+### Step 0.5: For local running flask app, please ensure you has installed SQLite3 on your machine. This project uses SQLite as the database.
 - [link to SQLite installation guide](https://sqlite.org/)
 
 ---
@@ -84,14 +87,14 @@ if you are not familiar with how to set up a virtual environment, please refer t
 
 Use the following command to clone the repository:  
 
-```
-git clone https://github.com/Oatsinthepine/flask_project_restructure.git
+```bash
+git clone https://github.com/Oatsinthepine/Brain-Tumor-Prediction.git
 ```
 
 Navigate to the project directory:  
 
-```
-cd flask_project_restructure
+```bash
+cd flask_project
 ```
 
 ---
@@ -100,7 +103,7 @@ cd flask_project_restructure
 
 Install the required Python dependencies using:  
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -171,7 +174,6 @@ but for now, I hope you enjoy using this app locally!
 ### potential future updates:
 The core functionality of the app is complete, but I have some ideas for future improvements, however I want to keep it fairly simple as my first project
 - [] I am considering to rewrite the frontend using React + TypeScript.
-- [] maybe add more features like image upload history, and user profile page?
 - [] ~~Rewrite the backend using FastAPI as I will be using FastAPI in my future project 🫠.~~
 
 
