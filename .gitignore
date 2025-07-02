@@ -20,5 +20,3 @@ migrations/
 # ignore .env file
 .env
 
-# miscellaneous
-thankyou.gif
