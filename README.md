@@ -1,4 +1,4 @@
-# Brain Tumor Prediction App
+# Brain Tumor Prediction
 
 This Flask web application allows users to upload brain MRI images and predict whether a brain tumor is present, as well as identify the potential class of the tumor.  
 The backend model is trained on medical imaging datasets obtained from Kaggle and leverages convolutional neural networks (CNNs) to classify brain tumors.
@@ -158,9 +158,35 @@ Replace `{port}` with the port number displayed in the console (default is usual
 
 ---
 
-### Then you can access the app in your web browser and start using it 🎉!
+### Then you can access the app in your web browser and start using it 🎉
+
+### Additional Notes for all users:
+This is my first time building a mini web application using Flask. My intention was to build a simple web app that can be used to predict brain tumor from MRI images,
+by integrating the original group project. I deployed this app on Render before, but since it no-longer offers long-term access to free-tier cloud Postgres database, 
+so I decided to kinda revert the project to a local version for now 🥲. 
+
+In the future, I may consider re-deploying it on a different platform, maybe modify the project a bit more just to incorporate the skills I learned along with my data science learing.
+but for now, I hope you enjoy using this app locally!
+
+### potential future updates:
+The core functionality of the app is complete, but I have some ideas for future improvements, however I want to keep it fairly simple as my first project
+- [] I am considering to rewrite the frontend using React + TypeScript.
+- [] maybe add more features like image upload history, and user profile page?
+- [] ~~Rewrite the backend using FastAPI as I will be using FastAPI in my future project 🫠.~~
 
 
+<p align="center">
+  <img src="thankyou.gif" width="200" alt="Thank You">
+</p>
+
+*GIF by [Leo Bryan Arief]https://www.artstation.com/artwork/mDxeNY via [ArtStation](https://www.artstation.com/)*
+
+
+Again, thanks for checking out this project! If you have any questions or suggestions, or like to make connections. Feel free to reach out to me on GitHub or LinkedIn.
+
+
+## License
+This project is licensed under the MIT License.
 
 
 
